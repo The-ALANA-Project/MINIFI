@@ -1,0 +1,16 @@
+DEPLOYMENT_TYPE=FRONTEND_ONLY
+DISABLE_SUPABASE=true
+DISABLE_EDGE_FUNCTIONS=true  
+DISABLE_BACKEND=true
+STATIC_ONLY=true
+CLIENT_SIDE_ONLY=true
+
+# This application should be deployed as a static site
+# No server-side components required
+# No database connections required
+# No external service integrations required
+
+BUILD_COMMAND=npm run build
+BUILD_OUTPUT=dist
+FRAMEWORK=react
+RUNTIME=browser

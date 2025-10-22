@@ -1,0 +1,38 @@
+{
+  "name": "alana-project-frontend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "ALANA Project - Frontend-Only React Application",
+  "main": "App.tsx",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": ["react", "frontend", "web3", "education", "static"],
+  "author": "ALANA Project",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alana-project/frontend"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "config": {
+    "deploymentType": "static",
+    "backend": false,
+    "supabase": false
+  }
+}

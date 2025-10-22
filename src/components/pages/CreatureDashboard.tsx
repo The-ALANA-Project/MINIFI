@@ -1,0 +1,695 @@
+import { useState, useEffect, useRef } from 'react';
+import { Heart, Zap, TrendingUp, Cookie, Droplets, Activity, ChevronLeft, ChevronRight, Info } from 'lucide-react';
+import { Button } from '../ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Badge } from '../ui/badge';
+import { Progress } from '../ui/progress';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { toast } from 'sonner@2.0.3';
+import { motion, AnimatePresence } from 'motion/react';
+import sunnyoImage from 'figma:asset/dd2bf1c1f6de584004aa489ac7fce117393c0239.png';
+import jellodrasImage from 'figma:asset/7faac7b58396842abb9e0e75ccdcb2d00d14adcd.png';
+import lumibelImage from 'figma:asset/1ce5fb3181519c0af59cf06f998a54b077adcf0d.png';
+import snoodellaImage from 'figma:asset/d8a5503b511bbfd38cd94bd9518eceb0a0ae1a3e.png';
+import mellobaImage from 'figma:asset/7ffe4091d18852bc5b5d41a14d2a68cfde44b312.png';
+import wistrowImage from 'figma:asset/fa4e594bf0d6745e205993f782059909589fd28d.png';
+import dozukiImage from 'figma:asset/d85ffac30c486428705449914df3d9a1aa9cdd6c.png';
+import orbitronImage from 'figma:asset/f5e3a69c7beea69b11f75e4d79982975b97e69c5.png';
+import solaraImage from 'figma:asset/a74d0a257c68f6c95d7f5d244ff12307f14408a9.png';
+import bubbitImage from 'figma:asset/8a42f6b81eff92ba2149ceb63a4027ad9e9edb3c.png';
+
+interface CreatureDashboardProps {
+  creatureName: string;
+  ownedCreatures?: string[]; // Array of creature names owned by the user
+  walletAddress: string; // Wallet address for data persistence
+}
+
+interface CreatureData {
+  name: string;
+  hunger: number;
+  happiness: number;
+  energy: number;
+  level: number;
+  experience: number;
+  lastFeedTime: number;
+}
+
+const CREATURE_DATA: Record<string, { emoji?: string; image?: string; color: string; description: string; slogan: string }> = {
+  'Sunnyo': { 
+    image: sunnyoImage, 
+    color: '#DCC2FE', 
+    description: 'Your cheerful savings buddy',
+    slogan: "Hiya! I'm Sunnyo, your cheerful savings buddy. Every time you feed me, I celebrate because even small investments can grow into something amazing! Let's take each step together—I'll always remind you that saving should be fun and bright."
+  },
+  'Jellodras': { 
+    image: jellodrasImage, 
+    color: '#B99EF5', 
+    description: 'Curious explorer of opportunities',
+    slogan: "Hello! I'm Jellodras. With my many eyes, I love searching for new opportunities and showing you the safest paths to grow your savings. I'm curious and always exploring, so follow me if you want to discover some hidden yield in our world!"
+  },
+  'Lumibel': { 
+    image: lumibelImage, 
+    color: '#9B7FE8', 
+    description: 'Gentle and encouraging protector of savings',
+    slogan: "Greetings! I'm Lumibel, the gentle protector of your savings. I'm here to offer comfort and encouragement when you try DeFi for the first time. With me, you never need to worry—I'll keep things simple and safe as you begin your savings journey."
+  },
+  'Snoodella': { 
+    image: snoodellaImage, 
+    color: '#DCC2FE', 
+    description: 'Your peaceful and SPA-loving savings companion',
+    slogan: "Hi there! I'm Snoodella, your peaceful companion on the savings journey. I love taking things slow and soaking up every moment. Let's grow together at a relaxed pace—remember, patience is the secret to seeing your savings blossom; and of course feeding me!"
+  },
+  'Melloba': { 
+    image: mellobaImage, 
+    color: '#8B6FD8', 
+    description: 'Gentle support in the background',
+    slogan: "Hello, I'm Melloba. I'm a bit shy, but I bring gentle support wherever you wander. If you ever feel unsure about DeFi or savings, I'll be here in the background, quietly keeping things soft and secure—so you can always explore with peace of mind."
+  },
+  'Wistrow': { 
+    image: wistrowImage, 
+    color: '#B99EF5', 
+    description: 'Your loyal butler at your service',
+    slogan: "Good day, I am Wistrow—your loyal butler and at your service. My greatest pleasure is to attend to your first steps in DeFi. Attend to me and I will attend to you, simply feed me—I'll guide you with structured meal plans, keeping your savings on track and your worries at bay."
+  },
+  'Dozuki': { 
+    image: dozukiImage, 
+    color: '#A08AE5', 
+    description: 'Slow and steady savings guide',
+    slogan: "Hello, I'm Dozuki. I take things slow and never rush—because your journey is yours alone. I'm here to remind you to relax, enjoy each moment, and trust that steady steps lead to lasting savings. Don't forget to feed me though, I might look sleepy but I am working hard for you!"
+  },
+  'Orbitron': { 
+    image: orbitronImage, 
+    color: '#C9B3F9', 
+    description: 'Watchful observer of your progress',
+    slogan: "Greetings, I am Orbitron. With my single watchful eye, I help keep track of your progress and show you the bigger picture. Whenever you want guidance or reassurance, just look my way—I'll be here to help you generate your savings adventure with all my observative powers."
+  },
+  'Solara': { 
+    image: solaraImage, 
+    color: '#B99EF5', 
+    description: 'Shines brightest with your progress',
+    slogan: "Hi, I'm Solara! I shine brightest when I see you making progress, big or small. Every little step in your savings deserves a celebration, and I'm here to keep things positive and encourage you to stay bright every day. Feed me so I will be with you for a long time!"
+  },
+  'Bubbit': { 
+    image: bubbitImage, 
+    color: '#8B6FD8', 
+    description: 'Excited explorer of possibilities',
+    slogan: "Hey there! I'm Bubbit. My eyes see endless possibilities and I'm always excited to explore something new. Let's go on a savings journey together, I'll be right here with you—ready to be fed and generate some mini savings for you!"
+  },
+};
+
+export function CreatureDashboard({ creatureName, ownedCreatures: ownedCreatureNames = [creatureName], walletAddress }: CreatureDashboardProps) {
+  // Initialize creature data from owned creature names
+  const initializeCreatures = (): CreatureData[] => {
+    // Check if we have saved creature data for this wallet
+    const storageKey = `minifi-creatures-data-${walletAddress}`;
+    const savedData = localStorage.getItem(storageKey);
+    
+    if (savedData) {
+      try {
+        const parsedData = JSON.parse(savedData);
+        // Ensure all owned creatures have data
+        return ownedCreatureNames.map(name => {
+          const existing = parsedData.find((c: CreatureData) => c.name === name);
+          return existing || {
+            name,
+            hunger: 75,
+            happiness: 80,
+            energy: 90,
+            level: 1,
+            experience: 0,
+            lastFeedTime: Date.now(),
+          };
+        });
+      } catch (e) {
+        console.error('Error loading creature data:', e);
+      }
+    }
+    
+    // Initialize new creatures
+    return ownedCreatureNames.map(name => ({
+      name,
+      hunger: 75,
+      happiness: 80,
+      energy: 90,
+      level: 1,
+      experience: 0,
+      lastFeedTime: Date.now(),
+    }));
+  };
+
+  const [ownedCreatures, setOwnedCreatures] = useState<CreatureData[]>(initializeCreatures());
+
+  const [currentCreatureIndex, setCurrentCreatureIndex] = useState(0);
+  const [upBalance, setUpBalance] = useState(100); // Mock token balance
+  
+  // Individual creature states
+  const [hunger, setHunger] = useState(ownedCreatures[0].hunger);
+  const [happiness, setHappiness] = useState(ownedCreatures[0].happiness);
+  const [energy, setEnergy] = useState(ownedCreatures[0].energy);
+  const [level, setLevel] = useState(ownedCreatures[0].level);
+  const [experience, setExperience] = useState(ownedCreatures[0].experience);
+  const [lastFeedTime, setLastFeedTime] = useState<number>(ownedCreatures[0].lastFeedTime);
+  
+  // Swipe detection
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
+  
+  const minSwipeDistance = 50;
+
+  const currentCreature = ownedCreatures[currentCreatureIndex];
+  
+  // Update stats when switching creatures
+  useEffect(() => {
+    const creature = ownedCreatures[currentCreatureIndex];
+    setHunger(creature.hunger);
+    setHappiness(creature.happiness);
+    setEnergy(creature.energy);
+    setLevel(creature.level);
+    setExperience(creature.experience);
+    setLastFeedTime(creature.lastFeedTime);
+  }, [currentCreatureIndex, ownedCreatures]);
+
+  // Get creature display (image or emoji) based on name
+  const getCreatureDisplay = (name: string) => {
+    const data = CREATURE_DATA[name];
+    if (!data) return { type: 'emoji', value: '🌟' };
+    
+    if (data.image) {
+      return { type: 'image', value: data.image };
+    } else if (data.emoji) {
+      return { type: 'emoji', value: data.emoji };
+    }
+    return { type: 'emoji', value: '🌟' };
+  };
+  
+  // Swipe handlers
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    // Only allow swiping if there are multiple creatures
+    if (ownedCreatures.length <= 1) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    
+    if (isLeftSwipe && currentCreatureIndex < ownedCreatures.length - 1) {
+      setSwipeDirection('left');
+      setCurrentCreatureIndex(prev => prev + 1);
+      toast.success(`Switched to ${ownedCreatures[currentCreatureIndex + 1].name}! 🌟`);
+    }
+    
+    if (isRightSwipe && currentCreatureIndex > 0) {
+      setSwipeDirection('right');
+      setCurrentCreatureIndex(prev => prev - 1);
+      toast.success(`Switched to ${ownedCreatures[currentCreatureIndex - 1].name}! 🌟`);
+    }
+    
+    setTimeout(() => setSwipeDirection(null), 300);
+  };
+  
+  const navigateToCreature = (index: number) => {
+    if (index !== currentCreatureIndex) {
+      setSwipeDirection(index > currentCreatureIndex ? 'left' : 'right');
+      setCurrentCreatureIndex(index);
+      toast.success(`Switched to ${ownedCreatures[index].name}! 🌟`);
+      setTimeout(() => setSwipeDirection(null), 300);
+    }
+  };
+
+  // Save creature data whenever it changes (wallet-specific)
+  useEffect(() => {
+    if (walletAddress) {
+      const storageKey = `minifi-creatures-data-${walletAddress}`;
+      localStorage.setItem(storageKey, JSON.stringify(ownedCreatures));
+    }
+  }, [ownedCreatures, walletAddress]);
+
+  // Decrease stats over time (calibrated for 72-hour starvation timeline)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOwnedCreatures(prevCreatures => 
+        prevCreatures.map((creature, index) => 
+          index === currentCreatureIndex
+            ? {
+                ...creature,
+                hunger: Math.max(0, creature.hunger - 0.012),
+                happiness: Math.max(0, creature.happiness - 0.012),
+                energy: Math.max(0, creature.energy - 0.012),
+              }
+            : creature
+        )
+      );
+    }, 30000); // Every 30 seconds
+
+    return () => clearInterval(interval);
+  }, [currentCreatureIndex]);
+
+  const feedCreature = (amount: number) => {
+    const now = Date.now();
+    const timeSinceLastFeed = now - lastFeedTime;
+    
+    // Cooldown of 5 seconds between feeds
+    if (timeSinceLastFeed < 5000) {
+      toast.error('Wait a moment before feeding again!');
+      return;
+    }
+
+    if (upBalance < amount) {
+      toast.error('Not enough tokens!');
+      return;
+    }
+
+    setUpBalance(prev => prev - amount);
+    
+    // Update the current creature's data
+    setOwnedCreatures(prevCreatures => 
+      prevCreatures.map((creature, index) => {
+        if (index !== currentCreatureIndex) return creature;
+        
+        const newHunger = Math.min(100, creature.hunger + amount * 2);
+        const newHappiness = Math.min(100, creature.happiness + amount);
+        const newEnergy = Math.min(100, creature.energy + amount * 1.5);
+        const newXp = creature.experience + amount * 10;
+        
+        let newLevel = creature.level;
+        let finalXp = newXp;
+        
+        if (newXp >= creature.level * 100) {
+          newLevel = creature.level + 1;
+          finalXp = newXp - (creature.level * 100);
+          toast.success(`🎉 Your ${creature.name} leveled up to ${newLevel}!`);
+        }
+        
+        return {
+          ...creature,
+          hunger: newHunger,
+          happiness: newHappiness,
+          energy: newEnergy,
+          level: newLevel,
+          experience: finalXp,
+          lastFeedTime: now,
+        };
+      })
+    );
+    
+    setLastFeedTime(now);
+    
+    const messages = [
+      `${currentCreature.name} enjoyed that! 😋`,
+      `Nom nom! ${currentCreature.name} is happy! 🌟`,
+      `${currentCreature.name} feels energized! ⚡`,
+      `Delicious! ${currentCreature.name} wants more! 💜`,
+    ];
+    toast.success(messages[Math.floor(Math.random() * messages.length)]);
+  };
+
+  const getStatusEmoji = (value: number) => {
+    if (value > 70) return '😊';
+    if (value > 40) return '😐';
+    return '😢';
+  };
+
+  const getStatusColor = (value: number) => {
+    if (value > 70) return 'bg-[#DCC2FE]';
+    if (value > 40) return 'bg-yellow-500';
+    return 'bg-red-500';
+  };
+
+  const xpNeeded = level * 100;
+  const xpProgress = (experience / xpNeeded) * 100;
+
+  return (
+    <div 
+      className="min-h-screen bg-[#262424] pb-24 pt-20 relative overflow-hidden"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
+      {/* Cosmic Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-[#DCC2FE]/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-40 right-10 w-40 h-40 bg-[#DCC2FE]/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute bottom-40 left-1/4 w-36 h-36 bg-[#DCC2FE]/8 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+      </div>
+      
+      <div className="w-full max-w-7xl mx-auto relative z-10">
+        {/* Navigation Indicator - Show multiple creatures owned */}
+        {ownedCreatures.length > 1 && (
+          <div className="px-4 pt-4 pb-2">
+            <div className="flex items-center justify-center gap-4">
+              {/* Left Arrow */}
+              <button
+                onClick={() => currentCreatureIndex > 0 && navigateToCreature(currentCreatureIndex - 1)}
+                className={`p-2 rounded-full transition-all ${
+                  currentCreatureIndex > 0 
+                    ? 'text-[#DCC2FE] hover:bg-[#DCC2FE]/10 cursor-pointer' 
+                    : 'text-[#D9D9D9]/20 cursor-not-allowed'
+                }`}
+                disabled={currentCreatureIndex === 0}
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+
+              {/* Dots Indicator */}
+              <div className="flex items-center gap-2">
+                {ownedCreatures.map((creature, index) => (
+                  <button
+                    key={index}
+                    onClick={() => navigateToCreature(index)}
+                    className="group relative"
+                  >
+                    <div
+                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                        index === currentCreatureIndex
+                          ? 'bg-[#DCC2FE] w-8'
+                          : 'bg-[#D9D9D9]/30 hover:bg-[#D9D9D9]/50'
+                      }`}
+                    />
+                    {/* Tooltip on hover */}
+                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-[#262424] border border-[#DCC2FE]/30 px-2 py-1 rounded text-xs text-[#F3F3F3] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                      {creature.name}
+                    </div>
+                  </button>
+                ))}
+              </div>
+
+              {/* Right Arrow */}
+              <button
+                onClick={() => currentCreatureIndex < ownedCreatures.length - 1 && navigateToCreature(currentCreatureIndex + 1)}
+                className={`p-2 rounded-full transition-all ${
+                  currentCreatureIndex < ownedCreatures.length - 1
+                    ? 'text-[#DCC2FE] hover:bg-[#DCC2FE]/10 cursor-pointer' 
+                    : 'text-[#D9D9D9]/20 cursor-not-allowed'
+                }`}
+                disabled={currentCreatureIndex === ownedCreatures.length - 1}
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+            
+            {/* Swipe Hint */}
+            <p className="text-center text-xs text-[#D9D9D9]/50 mt-2">
+              Swipe or tap to switch creatures
+            </p>
+          </div>
+        )}
+
+        {/* Hero Section - Larger spacing from header */}
+        <AnimatePresence mode="wait">
+          <motion.section
+            key={currentCreatureIndex}
+            initial={{ opacity: 0, x: swipeDirection === 'left' ? 100 : -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: swipeDirection === 'left' ? -100 : 100 }}
+            transition={{ duration: 0.3 }}
+            className="px-4 sm:px-6 lg:px-8 pt-8 pb-8"
+          >
+            <div className="text-center space-y-6">
+              {/* Creature Display with Glow Effect */}
+              <div className="relative inline-block">
+                <div className="absolute inset-0 bg-[#DCC2FE]/20 rounded-2xl blur-2xl scale-110 animate-pulse" />
+                <div className="relative mb-4 creature-float">
+                  {(() => {
+                    const display = getCreatureDisplay(currentCreature.name);
+                    if (display.type === 'image') {
+                      return (
+                        <div className="w-64 h-64 sm:w-80 sm:h-80 rounded-2xl overflow-hidden bg-gradient-to-br from-[#DCC2FE]/10 to-[#DCC2FE]/5 border-2 border-[#DCC2FE]/20 mx-auto p-4 sm:p-6">
+                          <img 
+                            src={display.value} 
+                            alt={currentCreature.name}
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div className="text-9xl sm:text-[10rem]">
+                          {display.value}
+                        </div>
+                      );
+                    }
+                  })()}
+                </div>
+              </div>
+              
+              {/* Creature Name & Level */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-center gap-2">
+                  <h1 className="text-3xl sm:text-4xl font-medium text-[#F3F3F3] tracking-wide">
+                    {currentCreature.name}
+                  </h1>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="p-1.5 rounded-full hover:bg-[#DCC2FE]/10 transition-colors">
+                        <Info className="w-5 h-5 text-[#DCC2FE]" />
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-[#262424] border-[#DCC2FE]/30 max-w-sm">
+                      <DialogHeader>
+                        <DialogTitle className="text-[#F3F3F3] text-xl">
+                          About {currentCreature.name}
+                        </DialogTitle>
+                      </DialogHeader>
+                      <p className="text-[#D9D9D9] text-sm leading-relaxed">
+                        {CREATURE_DATA[currentCreature.name]?.slogan}
+                      </p>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+                <p className="text-sm text-[#D9D9D9]/70 italic">
+                  {CREATURE_DATA[currentCreature.name]?.description}
+                </p>
+                <div className="flex items-center justify-center gap-3">
+                  <Badge className="bg-gradient-to-r from-[#DCC2FE] to-[#B99EF5] text-[#262424] px-4 py-1.5 shadow-lg shadow-[#DCC2FE]/30">
+                    Level {level}
+                  </Badge>
+                  <Badge className="bg-[#262424]/50 backdrop-blur-sm text-[#DCC2FE] border border-[#DCC2FE]/30 px-4 py-1.5">
+                    {upBalance} UP
+                  </Badge>
+                </div>
+              </div>
+              
+              {/* XP Progress - Enhanced */}
+              <div className="max-w-md mx-auto space-y-2 px-4">
+                <div className="flex justify-between text-sm text-[#D9D9D9]">
+                  <span className="flex items-center gap-1">
+                    <Activity className="w-4 h-4 text-[#DCC2FE]" />
+                    Experience
+                  </span>
+                  <span className="text-[#DCC2FE]">{experience} / {xpNeeded}</span>
+                </div>
+                <div className="relative">
+                  <Progress value={xpProgress} className="h-3 bg-[#262424]/50 border border-[#DCC2FE]/20" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#DCC2FE]/20 to-transparent rounded-full pointer-events-none" />
+                </div>
+              </div>
+            </div>
+          </motion.section>
+        </AnimatePresence>
+
+        {/* Stats Grid - Minimal Design */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`stats-${currentCreatureIndex}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, delay: 0.1 }}
+            className="px-4 sm:px-6 lg:px-8 mb-8"
+          >
+            <div className="space-y-5 max-w-md mx-auto">
+            {/* Hunger Stat */}
+            <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Cookie className="w-4 h-4 text-[#DCC2FE]" />
+                    <span className="text-sm text-[#F3F3F3]">Hunger</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">{getStatusEmoji(hunger)}</span>
+                    <span className="text-sm text-[#DCC2FE]">{Math.round(hunger)}%</span>
+                  </div>
+                </div>
+                <div className="relative">
+                  <Progress value={hunger} className={`h-2 ${getStatusColor(hunger)}`} />
+                  {hunger > 70 && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse rounded-full pointer-events-none" />
+                  )}
+                </div>
+            </div>
+
+            {/* Happiness Stat */}
+            <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Heart className="w-4 h-4 text-[#DCC2FE]" />
+                    <span className="text-sm text-[#F3F3F3]">Happiness</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">{getStatusEmoji(happiness)}</span>
+                    <span className="text-sm text-[#DCC2FE]">{Math.round(happiness)}%</span>
+                  </div>
+                </div>
+                <div className="relative">
+                  <Progress value={happiness} className={`h-2 ${getStatusColor(happiness)}`} />
+                  {happiness > 70 && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse rounded-full pointer-events-none" />
+                  )}
+                </div>
+            </div>
+
+            {/* Energy Stat */}
+            <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Zap className="w-4 h-4 text-[#DCC2FE]" />
+                    <span className="text-sm text-[#F3F3F3]">Energy</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">{getStatusEmoji(energy)}</span>
+                    <span className="text-sm text-[#DCC2FE]">{Math.round(energy)}%</span>
+                  </div>
+                </div>
+                <div className="relative">
+                  <Progress value={energy} className={`h-2 ${getStatusColor(energy)}`} />
+                  {energy > 70 && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse rounded-full pointer-events-none" />
+                  )}
+                </div>
+            </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Feed Section - Game-style Actions */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`feed-${currentCreatureIndex}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, delay: 0.15 }}
+            className="px-4 sm:px-6 lg:px-8 mb-8"
+          >
+          <div className="mb-4 text-center">
+            <h3 className="text-lg font-medium text-[#F3F3F3] mb-1">Feed Your Creature</h3>
+            <p className="text-sm text-[#D9D9D9]/70">Choose your feeding option</p>
+          </div>
+          
+          <div className="grid grid-cols-4 gap-2">
+            {/* Snack */}
+            <Card 
+              className="glass-card border-[#DCC2FE]/30 cursor-pointer hover:border-[#DCC2FE] hover:shadow-lg hover:shadow-[#DCC2FE]/20 transition-all active:scale-95"
+              onClick={() => feedCreature(1)}
+            >
+              <CardContent className="p-2 text-center space-y-1.5">
+                <div className="w-10 h-10 mx-auto rounded-full bg-gradient-to-br from-[#DCC2FE]/20 to-[#DCC2FE]/5 flex items-center justify-center">
+                  <Droplets className="w-5 h-5 text-[#DCC2FE]" />
+                </div>
+                <div>
+                  <p className="text-[#F3F3F3] text-xs font-medium mb-0.5">Snack</p>
+                  <Badge className="bg-[#DCC2FE]/20 text-[#DCC2FE] border border-[#DCC2FE]/30 text-[10px] px-1.5 py-0">
+                    1 UP
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Meal */}
+            <Card 
+              className="glass-card border-[#DCC2FE]/30 cursor-pointer hover:border-[#DCC2FE] hover:shadow-lg hover:shadow-[#DCC2FE]/20 transition-all active:scale-95"
+              onClick={() => feedCreature(5)}
+            >
+              <CardContent className="p-2 text-center space-y-1.5">
+                <div className="w-10 h-10 mx-auto rounded-full bg-gradient-to-br from-[#DCC2FE]/20 to-[#DCC2FE]/5 flex items-center justify-center">
+                  <Cookie className="w-5 h-5 text-[#DCC2FE]" />
+                </div>
+                <div>
+                  <p className="text-[#F3F3F3] text-xs font-medium mb-0.5">Meal</p>
+                  <Badge className="bg-[#DCC2FE]/20 text-[#DCC2FE] border border-[#DCC2FE]/30 text-[10px] px-1.5 py-0">
+                    5 UP
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Feast */}
+            <Card 
+              className="glass-card border-[#DCC2FE]/30 cursor-pointer hover:border-[#DCC2FE] hover:shadow-lg hover:shadow-[#DCC2FE]/20 transition-all active:scale-95"
+              onClick={() => feedCreature(10)}
+            >
+              <CardContent className="p-2 text-center space-y-1.5">
+                <div className="w-10 h-10 mx-auto rounded-full bg-gradient-to-br from-[#DCC2FE]/20 to-[#DCC2FE]/5 flex items-center justify-center">
+                  <TrendingUp className="w-5 h-5 text-[#DCC2FE]" />
+                </div>
+                <div>
+                  <p className="text-[#F3F3F3] text-xs font-medium mb-0.5">Feast</p>
+                  <Badge className="bg-[#DCC2FE]/20 text-[#DCC2FE] border border-[#DCC2FE]/30 text-[10px] px-1.5 py-0">
+                    10 UP
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Deluxe */}
+            <Card 
+              className="glass-card border-[#DCC2FE]/30 cursor-pointer hover:border-[#DCC2FE] hover:shadow-lg hover:shadow-[#DCC2FE]/20 transition-all active:scale-95"
+              onClick={() => feedCreature(25)}
+            >
+              <CardContent className="p-2 text-center space-y-1.5">
+                <div className="w-10 h-10 mx-auto rounded-full bg-gradient-to-br from-[#DCC2FE]/20 to-[#DCC2FE]/5 flex items-center justify-center">
+                  <Heart className="w-5 h-5 text-[#DCC2FE]" />
+                </div>
+                <div>
+                  <p className="text-[#F3F3F3] text-xs font-medium mb-0.5">Deluxe</p>
+                  <Badge className="bg-gradient-to-r from-[#DCC2FE] to-[#B99EF5] text-[#262424] shadow-sm text-[10px] px-1.5 py-0">
+                    25 UP
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Tips Section */}
+        <div className="px-4 sm:px-6 mt-6 sm:mt-8 mb-6">
+          <Card className="glass-card border-[#DCC2FE]/30">
+            <CardContent className="p-4 sm:p-6 space-y-3">
+              <h4 className="font-medium text-[#F3F3F3] text-sm sm:text-base">Care Tips</h4>
+              <ul className="text-xs sm:text-sm text-[#D9D9D9] space-y-2">
+                <li className="flex items-start gap-2">
+                  <span className="text-[#DCC2FE]">•</span>
+                  <span>Creatures need revival after 72 hours without feeding</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#DCC2FE]">•</span>
+                  <span>Gain Experience Points by feeding to level up faster</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#DCC2FE]">•</span>
+                  <span>Keep stats above 70% for optimal growth</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#DCC2FE]">•</span>
+                  <span>UP is a token on Base by the Unlock Protocol community but you can feed the equivalent in any other currency as well that you have in your wallet</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}

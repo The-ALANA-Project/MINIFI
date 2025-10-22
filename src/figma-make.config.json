@@ -1,0 +1,11 @@
+{
+  "projectType": "frontend-only",
+  "disableBackendDeployment": true,
+  "disableSupabaseDeployment": true,
+  "disableEdgeFunctions": true,
+  "deploymentMode": "static",
+  "buildTarget": "client-only",
+  "serverless": false,
+  "backend": false,
+  "supabase": false
+}
