@@ -49,8 +49,18 @@ export function MobileHeader({
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full backdrop-blur-md bg-[#262424]/90 border-b border-[#DCC2FE]/20">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center justify-between">
+    <>
+      {/* Purple tinted backdrop overlay */}
+      <div 
+        className={`fixed inset-0 bg-[#DCC2FE]/20 backdrop-blur-sm z-40 transition-opacity duration-300 ${
+          isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setIsMobileMenuOpen(false)}
+        aria-hidden="true"
+      />
+      
+      <header className="fixed top-0 left-0 right-0 z-50 w-full backdrop-blur-md bg-[#262424]/90 border-b border-[#DCC2FE]/20">
+        <div className="w-full max-w-md mx-auto px-4 py-3 sm:py-4 flex items-center justify-between">
         {/* Logo */}
         <div 
           className="flex items-center cursor-pointer"
@@ -100,7 +110,7 @@ export function MobileHeader({
         }`}
       >
         <div className="backdrop-blur-md bg-[#262424]/95 border-t border-[#DCC2FE]/20">
-          <nav className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 space-y-1 sm:space-y-2">
+          <nav className="w-full max-w-md mx-auto px-4 py-3 sm:py-4 space-y-1 sm:space-y-2">
             {/* Wallet Status/Action */}
             <div className="mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-[#DCC2FE]/20">
               {isWalletConnected ? (
@@ -197,6 +207,7 @@ export function MobileHeader({
           </nav>
         </div>
       </div>
-    </header>
+      </header>
+    </>
   );
 }

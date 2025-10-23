@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
-import { Heart, Zap, TrendingUp, Cookie, Droplets, Activity, ChevronLeft, ChevronRight, Info } from 'lucide-react';
+import { Heart, Zap, TrendingUp, Cookie, Droplets, Activity, ChevronLeft, ChevronRight, Info, Wallet } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Progress } from '../ui/progress';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '../ui/dialog';
 import { toast } from 'sonner@2.0.3';
 import { motion, AnimatePresence } from 'motion/react';
 import sunnyoImage from 'figma:asset/dd2bf1c1f6de584004aa489ac7fce117393c0239.png';
@@ -22,6 +22,7 @@ interface CreatureDashboardProps {
   creatureName: string;
   ownedCreatures?: string[]; // Array of creature names owned by the user
   walletAddress: string; // Wallet address for data persistence
+  onNavigateToInfo?: () => void; // Navigation handler to info page
 }
 
 interface CreatureData {
@@ -97,7 +98,7 @@ const CREATURE_DATA: Record<string, { emoji?: string; image?: string; color: str
   },
 };
 
-export function CreatureDashboard({ creatureName, ownedCreatures: ownedCreatureNames = [creatureName], walletAddress }: CreatureDashboardProps) {
+export function CreatureDashboard({ creatureName, ownedCreatures: ownedCreatureNames = [creatureName], walletAddress, onNavigateToInfo }: CreatureDashboardProps) {
   // Initialize creature data from owned creature names
   const initializeCreatures = (): CreatureData[] => {
     // Check if we have saved creature data for this wallet
@@ -168,6 +169,15 @@ export function CreatureDashboard({ creatureName, ownedCreatures: ownedCreatureN
     setLevel(creature.level);
     setExperience(creature.experience);
     setLastFeedTime(creature.lastFeedTime);
+    
+    // Scroll to top when switching creatures
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    
+    // Also scroll any overflow containers to top (for desktop frame view)
+    const scrollContainers = document.querySelectorAll('[class*="overflow-y-auto"]');
+    scrollContainers.forEach(container => {
+      container.scrollTop = 0;
+    });
   }, [currentCreatureIndex, ownedCreatures]);
 
   // Get creature display (image or emoji) based on name
@@ -343,7 +353,7 @@ export function CreatureDashboard({ creatureName, ownedCreatures: ownedCreatureN
         <div className="absolute bottom-40 left-1/4 w-36 h-36 bg-[#DCC2FE]/8 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
       </div>
       
-      <div className="w-full max-w-7xl mx-auto relative z-10">
+      <div className="w-full max-w-md mx-auto relative z-10">
         {/* Navigation Indicator - Show multiple creatures owned */}
         {ownedCreatures.length > 1 && (
           <div className="px-4 pt-4 pb-2">
@@ -413,7 +423,7 @@ export function CreatureDashboard({ creatureName, ownedCreatures: ownedCreatureN
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: swipeDirection === 'left' ? -100 : 100 }}
             transition={{ duration: 0.3 }}
-            className="px-4 sm:px-6 lg:px-8 pt-8 pb-8"
+            className="px-4 pt-8 pb-8"
           >
             <div className="text-center space-y-6">
               {/* Creature Display with Glow Effect */}
@@ -451,19 +461,19 @@ export function CreatureDashboard({ creatureName, ownedCreatures: ownedCreatureN
                   </h1>
                   <Dialog>
                     <DialogTrigger asChild>
-                      <button className="p-1.5 rounded-full hover:bg-[#DCC2FE]/10 transition-colors">
+                      <button className="p-1 rounded-full hover:bg-[#DCC2FE]/10 transition-colors flex items-center justify-center">
                         <Info className="w-5 h-5 text-[#DCC2FE]" />
                       </button>
                     </DialogTrigger>
-                    <DialogContent className="bg-[#262424] border-[#DCC2FE]/30 max-w-sm">
+                    <DialogContent className="bg-[#262424] border-[#DCC2FE]/30 max-w-[336px] px-8">
                       <DialogHeader>
-                        <DialogTitle className="text-[#F3F3F3] text-xl">
-                          About {currentCreature.name}
+                        <DialogTitle className="text-[#DCC2FE] text-xl pr-6">
+                          I am {currentCreature.name}
                         </DialogTitle>
+                        <DialogDescription className="text-[#D9D9D9] text-sm leading-relaxed pr-6">
+                          {CREATURE_DATA[currentCreature.name]?.slogan}
+                        </DialogDescription>
                       </DialogHeader>
-                      <p className="text-[#D9D9D9] text-sm leading-relaxed">
-                        {CREATURE_DATA[currentCreature.name]?.slogan}
-                      </p>
                     </DialogContent>
                   </Dialog>
                 </div>
@@ -474,23 +484,25 @@ export function CreatureDashboard({ creatureName, ownedCreatures: ownedCreatureN
                   <Badge className="bg-gradient-to-r from-[#DCC2FE] to-[#B99EF5] text-[#262424] px-4 py-1.5 shadow-lg shadow-[#DCC2FE]/30">
                     Level {level}
                   </Badge>
-                  <Badge className="bg-[#262424]/50 backdrop-blur-sm text-[#DCC2FE] border border-[#DCC2FE]/30 px-4 py-1.5">
-                    {upBalance} UP
+                  {/* Wallet Balance - Compact Display */}
+                  <Badge className="bg-[#262424]/50 backdrop-blur-sm text-[#DCC2FE] border border-[#DCC2FE]/30 px-3 py-1.5 flex items-center gap-1.5">
+                    <Wallet className="w-3.5 h-3.5" />
+                    <span>{upBalance} UP</span>
                   </Badge>
                 </div>
               </div>
               
-              {/* XP Progress - Enhanced */}
-              <div className="max-w-md mx-auto space-y-2 px-4">
-                <div className="flex justify-between text-sm text-[#D9D9D9]">
-                  <span className="flex items-center gap-1">
+              {/* XP Progress - Aligned with stats */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
                     <Activity className="w-4 h-4 text-[#DCC2FE]" />
-                    Experience
-                  </span>
-                  <span className="text-[#DCC2FE]">{experience} / {xpNeeded}</span>
+                    <span className="text-sm text-[#F3F3F3]">Experience</span>
+                  </div>
+                  <span className="text-sm text-[#DCC2FE]">{experience} / {xpNeeded}</span>
                 </div>
                 <div className="relative">
-                  <Progress value={xpProgress} className="h-3 bg-[#262424]/50 border border-[#DCC2FE]/20" />
+                  <Progress value={xpProgress} className="h-4 bg-[#262424]/50 border border-[#DCC2FE]/20" />
                   <div className="absolute inset-0 bg-gradient-to-r from-[#DCC2FE]/20 to-transparent rounded-full pointer-events-none" />
                 </div>
               </div>
@@ -506,9 +518,9 @@ export function CreatureDashboard({ creatureName, ownedCreatures: ownedCreatureN
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2, delay: 0.1 }}
-            className="px-4 sm:px-6 lg:px-8 mb-8"
+            className="px-4 mb-8"
           >
-            <div className="space-y-5 max-w-md mx-auto">
+            <div className="space-y-5">
             {/* Hunger Stat */}
             <div className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -580,10 +592,13 @@ export function CreatureDashboard({ creatureName, ownedCreatures: ownedCreatureN
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2, delay: 0.15 }}
-            className="px-4 sm:px-6 lg:px-8 mb-8"
+            className="px-4 mb-8"
           >
           <div className="mb-4 text-center">
-            <h3 className="text-lg font-medium text-[#F3F3F3] mb-1">Feed Your Creature</h3>
+            <h3 className="text-lg font-medium text-[#DCC2FE] mb-1 flex items-center justify-center gap-2">
+              <Cookie className="w-5 h-5 text-[#DCC2FE]" />
+              Feed Your Creature
+            </h3>
             <p className="text-sm text-[#D9D9D9]/70">Choose your feeding option</p>
           </div>
           
@@ -664,14 +679,17 @@ export function CreatureDashboard({ creatureName, ownedCreatures: ownedCreatureN
         </AnimatePresence>
 
         {/* Tips Section */}
-        <div className="px-4 sm:px-6 mt-6 sm:mt-8 mb-6">
+        <div className="px-4 mt-6 sm:mt-8 mb-6">
           <Card className="glass-card border-[#DCC2FE]/30">
             <CardContent className="p-4 sm:p-6 space-y-3">
-              <h4 className="font-medium text-[#F3F3F3] text-sm sm:text-base">Care Tips</h4>
+              <h4 className="font-medium text-[#F3F3F3] text-sm sm:text-base flex items-center gap-2">
+                <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-[#DCC2FE]" />
+                Care Tips
+              </h4>
               <ul className="text-xs sm:text-sm text-[#D9D9D9] space-y-2">
                 <li className="flex items-start gap-2">
                   <span className="text-[#DCC2FE]">•</span>
-                  <span>Creatures need revival after 72 hours without feeding</span>
+                  <span>Your Turritecco creature can't die but requires regular feeding</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-[#DCC2FE]">•</span>
@@ -683,7 +701,7 @@ export function CreatureDashboard({ creatureName, ownedCreatures: ownedCreatureN
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-[#DCC2FE]">•</span>
-                  <span>UP is a token on Base by the Unlock Protocol community but you can feed the equivalent in any other currency as well that you have in your wallet</span>
+                  <span>You can feed your creature with any currency you have in your wallet but the $UP token is affordable and can be earned (check <button onClick={onNavigateToInfo} className="text-[#DCC2FE] underline hover:text-[#DCC2FE]/80 transition-colors inline p-0 m-0 border-0 bg-transparent cursor-pointer align-baseline !min-h-0 !min-w-0 !leading-[inherit] text-sm">about section</button>)</span>
                 </li>
               </ul>
             </CardContent>

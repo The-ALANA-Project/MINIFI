@@ -135,9 +135,9 @@ export function MintingPage({ onMintComplete, isWalletConnected, onWalletConnect
         <div className="absolute bottom-32 left-1/3 w-40 h-40 bg-[#DCC2FE]/12 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '3s' }} />
       </div>
       
-      <div className="w-full max-w-7xl mx-auto relative z-10">
+      <div className="w-full max-w-md mx-auto relative z-10">
         {/* Hero Section with Tagline */}
-        <section className="px-4 sm:px-6 lg:px-8 pt-8 pb-8 text-center">
+        <section className="px-4 pt-8 pb-8 text-center">
           <div className="space-y-4">
             <div className="space-y-2 relative">
               {/* Glowing title effect */}
@@ -153,7 +153,7 @@ export function MintingPage({ onMintComplete, isWalletConnected, onWalletConnect
                 Feed. Grow. Save.
               </p>
             </div>
-            <p className="text-sm sm:text-base text-[#D9D9D9]/90 max-w-2xl mx-auto px-4 leading-relaxed">
+            <p className="text-sm sm:text-base text-[#D9D9D9]/90 leading-relaxed">
               Mint your cosmic creature, feed it to grow stronger, and watch your savings generate yield through <a 
                 href="https://aave.com/" 
                 target="_blank" 
@@ -178,16 +178,16 @@ export function MintingPage({ onMintComplete, isWalletConnected, onWalletConnect
 
         {/* How It Works - Swipeable on Mobile */}
         {!isWalletConnected && (
-          <div className="mb-8">
+          <div className="mb-8 px-4">
             {/* Title and Description */}
-            <div className="mb-6 px-4 sm:px-6 lg:px-8">
+            <div className="mb-6">
               <h2 className="text-lg sm:text-xl text-[#DCC2FE] font-medium tracking-wider mb-2">How It Works</h2>
               <p className="text-sm text-[#D9D9D9]/80">4 steps to get you started</p>
             </div>
 
             {/* Mobile: Swipeable Cards */}
-            <div className="sm:hidden overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 pb-2">
-              <div className="flex gap-4 w-max">
+            <div className="overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 -mx-4">
+              <div className="flex gap-4 w-max px-4">
                 {/* Card 0: Connect Wallet */}
                 <Card 
                   className="glass-card border-[#DCC2FE]/30 w-[280px] snap-center flex-shrink-0 cursor-pointer hover:border-[#DCC2FE]/60 transition-all duration-300"
@@ -306,7 +306,7 @@ export function MintingPage({ onMintComplete, isWalletConnected, onWalletConnect
             </div>
 
             {/* Desktop: Grid Layout */}
-            <div className="hidden sm:block px-4 sm:px-6 lg:px-8">
+            <div className="hidden">
               <div className="grid grid-cols-4 gap-4">
                 {/* Card 0: Connect Wallet */}
                 <Card 
@@ -429,7 +429,7 @@ export function MintingPage({ onMintComplete, isWalletConnected, onWalletConnect
 
         {/* Wallet Connection CTA - Enhanced */}
         {!isWalletConnected && (
-          <div className="px-4 sm:px-6 lg:px-8 mb-6">
+          <div className="px-4 mb-6">
             {/* Step 0 Header */}
             <div className="mb-6">
               <h2 className="text-lg sm:text-xl text-[#DCC2FE] font-medium tracking-wider mb-2">Step 0</h2>
@@ -528,7 +528,7 @@ export function MintingPage({ onMintComplete, isWalletConnected, onWalletConnect
         {/* Minting Options - Enhanced Design */}
         {isWalletConnected && (
           <>
-            <div className="px-4 sm:px-6 lg:px-8 mb-8">
+            <div className="px-4 mb-8">
               <div className="mb-6">
                 <h2 className="text-lg sm:text-xl text-[#DCC2FE] font-medium tracking-wider mb-2">Choose Your Path</h2>
                 <p className="text-sm text-[#D9D9D9]/80">Select how you'd like to mint your cosmic companion</p>
@@ -592,8 +592,8 @@ export function MintingPage({ onMintComplete, isWalletConnected, onWalletConnect
             </div>
 
             {/* Creatures Carousel - Circular Slide Menu */}
-            <div className="mb-6">
-              <div className="mb-6 px-4 sm:px-6 lg:px-8">
+            <div className="mb-6 px-4">
+              <div className="mb-6">
                 <h3 className="text-lg sm:text-xl text-[#DCC2FE] font-medium tracking-wider mb-2">
                   Available Creatures
                 </h3>
@@ -603,7 +603,7 @@ export function MintingPage({ onMintComplete, isWalletConnected, onWalletConnect
               </div>
               
               {/* Creature Carousel */}
-              <div className="overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 pb-2">
+              <div className="overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 -mx-4 px-4">
                 <div className="flex gap-6 w-max py-4">
                   {CREATURES.map((creature, index) => (
                     <div

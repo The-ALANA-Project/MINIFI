@@ -62,8 +62,24 @@ export default function App() {
 
   // Reset scroll position whenever page changes
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentPage]);
+    // Use setTimeout to ensure DOM has updated
+    setTimeout(() => {
+      // Scroll window to top
+      window.scrollTo(0, 0);
+      
+      // Also scroll document elements directly
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      
+      // Scroll any overflow containers to top (for desktop frame view)
+      const scrollContainers = document.querySelectorAll('[class*="overflow"]');
+      scrollContainers.forEach(container => {
+        if (container instanceof HTMLElement) {
+          container.scrollTop = 0;
+        }
+      });
+    }, 0);
+  }, [currentPage, showIntro]);
 
   // Load creatures for a specific wallet
   const loadCreaturesForWallet = (wallet: string) => {
@@ -110,7 +126,6 @@ export default function App() {
       setShowIntro(false);
     }
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleWalletConnect = () => {
@@ -197,6 +212,7 @@ export default function App() {
             creatureName={mintedCreature} 
             ownedCreatures={mintedCreatures}
             walletAddress={walletAddress}
+            onNavigateToInfo={() => setCurrentPage('info')}
           />
         ) : (
           <MintingPage 

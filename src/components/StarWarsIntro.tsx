@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, ExternalLink } from 'lucide-react';
 import { Button } from './ui/button';
+import minifiLogo from 'figma:asset/43ed93ec12b7cd4f7b5812ed68ed562405f82239.png';
 
 interface StarWarsIntroProps {
   onComplete: () => void;
@@ -77,7 +78,7 @@ export function StarWarsIntro({ onComplete, onSkip }: StarWarsIntroProps) {
       <div className="star-wars">
         <div className="crawl">
           <div className="title">
-            <h1>MINIFI</h1>
+            <img src={minifiLogo} alt="MINIFI" className="logo-image" />
           </div>
           
           <p>
@@ -103,8 +104,8 @@ export function StarWarsIntro({ onComplete, onSkip }: StarWarsIntroProps) {
           </p>
 
           <p>
-            Ten unique creatures await, each with its own cosmic powers and personality. 
-            From the ancient <span className="highlight">Cosmic Dragon</span> to the swift <span className="highlight">Stardust Rabbit</span>, 
+            Ten unique <span className="highlight">Turriteccos</span> await, each with its own cosmic powers and personality. 
+            From the curious <span className="highlight">Jellodras</span> to the loyal <span className="highlight">Wistrow</span>, 
             your journey begins with a single choice.
           </p>
 
@@ -150,7 +151,9 @@ export function StarWarsIntro({ onComplete, onSkip }: StarWarsIntroProps) {
 
         .crawl > .title {
           font-size: 90%;
-          text-align: center;
+          text-align: left;
+          display: flex;
+          justify-content: flex-start;
         }
 
         .crawl > .title h1 {
@@ -160,9 +163,18 @@ export function StarWarsIntro({ onComplete, onSkip }: StarWarsIntroProps) {
           color: #DCC2FE;
         }
 
+        .crawl > .title .logo-image {
+          width: 80%;
+          max-width: 600px;
+          height: auto;
+          margin: 0 0 100px;
+          transform-style: preserve-3d;
+          filter: drop-shadow(0 0 20px rgba(220, 194, 254, 0.6));
+        }
+
         @keyframes crawl {
           0% {
-            top: 0;
+            top: 100vh;
             transform: rotateX(20deg) translateZ(0);
           }
           100% { 
@@ -194,6 +206,12 @@ export function StarWarsIntro({ onComplete, onSkip }: StarWarsIntroProps) {
             margin: 0 0 60px;
           }
 
+          .crawl > .title .logo-image {
+            width: 85%;
+            max-width: 400px;
+            margin: 0 0 60px;
+          }
+
           .crawl p {
             margin-bottom: 60px;
             font-size: 0.65em;
@@ -201,7 +219,7 @@ export function StarWarsIntro({ onComplete, onSkip }: StarWarsIntroProps) {
 
           @keyframes crawl {
             0% {
-              top: 0;
+              top: 100vh;
               transform: rotateX(20deg) translateZ(0);
             }
             100% { 
@@ -222,13 +240,19 @@ export function StarWarsIntro({ onComplete, onSkip }: StarWarsIntroProps) {
             margin: 0 0 80px;
           }
 
+          .crawl > .title .logo-image {
+            width: 82%;
+            max-width: 500px;
+            margin: 0 0 80px;
+          }
+
           .crawl p {
             margin-bottom: 80px;
           }
 
           @keyframes crawl {
             0% {
-              top: 0;
+              top: 100vh;
               transform: rotateX(20deg) translateZ(0);
             }
             100% { 

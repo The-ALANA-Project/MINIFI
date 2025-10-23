@@ -1,30 +1,41 @@
-import { Sparkles, Lock, Heart, Users, ExternalLink } from 'lucide-react';
+import { Sparkles, Lock, Heart, Users, ExternalLink, Zap, Coins, Wallet } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import minifiLogo from 'figma:asset/584cd2622c63f4a5ec2d067eb5be328d13b0799d.png';
+import sunnyoImage from 'figma:asset/dd2bf1c1f6de584004aa489ac7fce117393c0239.png';
+import jellodrasImage from 'figma:asset/7faac7b58396842abb9e0e75ccdcb2d00d14adcd.png';
+import lumibelImage from 'figma:asset/1ce5fb3181519c0af59cf06f998a54b077adcf0d.png';
+import snoodellaImage from 'figma:asset/d8a5503b511bbfd38cd94bd9518eceb0a0ae1a3e.png';
+import mellobaImage from 'figma:asset/7ffe4091d18852bc5b5d41a14d2a68cfde44b312.png';
+import wistrowImage from 'figma:asset/fa4e594bf0d6745e205993f782059909589fd28d.png';
+import dozukiImage from 'figma:asset/d85ffac30c486428705449914df3d9a1aa9cdd6c.png';
+import orbitronImage from 'figma:asset/f5e3a69c7beea69b11f75e4d79982975b97e69c5.png';
+import solaraImage from 'figma:asset/a74d0a257c68f6c95d7f5d244ff12307f14408a9.png';
+import bubbitImage from 'figma:asset/8a42f6b81eff92ba2149ceb63a4027ad9e9edb3c.png';
 
 export function InfoPage() {
   return (
     <div className="min-h-screen bg-[#262424] pb-24 pt-28">
-      <div className="w-full max-w-7xl mx-auto">
-        <div className="px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
-          <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
+      <div className="w-full max-w-md mx-auto">
+        <div className="px-4 space-y-6 sm:space-y-8">
             {/* Hero Section */}
             <section className="text-center space-y-3 sm:space-y-4">
-              <div className="mb-3 sm:mb-4 flex justify-center">
-                <img 
-                  src={minifiLogo} 
-                  alt="MINIFI Logo" 
-                  className="h-16 sm:h-20 w-auto"
-                />
+              <div className="mb-3 sm:mb-4 flex flex-col items-center gap-3">
+                <div className="inline-block">
+                  <img 
+                    src={minifiLogo} 
+                    alt="MINIFI Logo" 
+                    className="w-[45%] h-auto mb-3 mx-auto"
+                  />
+                  <p className="text-base sm:text-lg text-[#DCC2FE]/80 font-medium tracking-wide whitespace-nowrap">
+                    About the MINIFI App
+                  </p>
+                </div>
               </div>
-              <p className="text-base sm:text-lg text-[#DCC2FE]/80 font-medium tracking-wide">
-                About the MINIFI App
-              </p>
             </section>
 
             {/* Scrolling Banner */}
-            <section className="overflow-hidden bg-[#DCC2FE]/10 border-y border-[#DCC2FE]/30 py-3 -mx-4 sm:-mx-6 lg:-mx-8">
+            <section className="overflow-hidden bg-[#DCC2FE]/10 border-y border-[#DCC2FE]/30 py-3 -mx-4">
               <div className="animate-scroll whitespace-nowrap">
                 <span className="inline-block text-[#DCC2FE] font-medium text-base tracking-wider">
                   👇 Learn more 👇 Learn more 👇 Learn more 👇 Learn more 👇 Learn more 👇 Learn more 👇 Learn more 👇 Learn more 👇 Learn more 👇 Learn more 👇 Learn more 👇 Learn more 👇 
@@ -36,261 +47,165 @@ export function InfoPage() {
             </section>
 
             {/* What is MINIFI */}
-            <Card className="glass-card border-[#DCC2FE]/30">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-[#F3F3F3]">
-                  <Sparkles className="w-5 h-5 text-[#DCC2FE]" />
+            <div className="mb-6">
+              <div className="mb-6">
+                <h2 className="text-lg sm:text-xl text-[#DCC2FE] font-medium tracking-wider mb-2 flex items-center gap-2">
+                  <Sparkles className="w-5 h-5" />
                   What is MINIFI?
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 sm:space-y-4 text-[#D9D9D9] text-xs sm:text-sm">
-                <p>
-                  <strong className="text-[#DCC2FE]">MINIFI</strong> (Mini Finance) is a revolutionary 
-                  mobile-first Farcaster mini app that combines the joy of digital pet ownership with 
-                  DeFi yield generation.
-                </p>
-                <p>
-                  Mint your unique cosmic creature as an Unlock Protocol NFT, feed it with tokens 
-                  to help it grow, and watch your investments automatically generate yield through{' '}
-                  <a 
-                    href="https://aave.com/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-[#DCC2FE] hover:text-[#DCC2FE]/80 underline decoration-[#DCC2FE]/50 hover:decoration-[#DCC2FE] transition-colors inline-flex items-center gap-0.5"
-                  >
-                    Aave Protocol
-                    <ExternalLink className="w-3 h-3 inline" />
-                  </a>{' '}
-                  integration.
-                </p>
-                <p>
-                  It's not just about caring for your creature — it's about building savings while 
-                  having fun. <strong className="text-[#DCC2FE]">Feed. Grow. Save.</strong>
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Features Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                </h2>
+                <p className="text-sm text-[#D9D9D9]/80">Mini Finance for Creators & Creative Builders</p>
+              </div>
+              
               <Card className="glass-card border-[#DCC2FE]/30">
-                <CardContent className="p-3 sm:p-4 flex items-start gap-3 sm:gap-4">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#DCC2FE]/20 flex items-center justify-center flex-shrink-0">
-                    <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-[#DCC2FE]" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-[#F3F3F3] mb-1 text-sm sm:text-base">Unlock Protocol NFTs</h4>
-                    <p className="text-xs sm:text-sm text-[#D9D9D9]">
-                      Every creature is a unique NFT minted through Unlock Protocol, ensuring true ownership
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="glass-card border-[#DCC2FE]/30">
-                <CardContent className="p-3 sm:p-4 flex items-start gap-3 sm:gap-4">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#DCC2FE]/20 flex items-center justify-center flex-shrink-0">
-                    <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-[#DCC2FE]" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-[#F3F3F3] mb-1 text-sm sm:text-base">Feed & Grow</h4>
-                    <p className="text-xs sm:text-sm text-[#D9D9D9]">
-                      Use tokens to feed your creature, increase its stats, and watch it level up
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="glass-card border-[#DCC2FE]/30">
-                <CardContent className="p-3 sm:p-4 flex items-start gap-3 sm:gap-4">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#DCC2FE]/20 flex items-center justify-center flex-shrink-0">
-                    <Users className="w-4 h-4 sm:w-5 sm:h-5 text-[#DCC2FE]" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-[#F3F3F3] mb-1 text-sm sm:text-base">Aave Yield Generation</h4>
-                    <p className="text-xs sm:text-sm text-[#D9D9D9]">
-                      Your creature's feeding generates yield through{' '}
-                      <a 
-                        href="https://aave.com/" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-[#DCC2FE] hover:text-[#DCC2FE]/80 underline decoration-[#DCC2FE]/50 hover:decoration-[#DCC2FE] transition-colors inline-flex items-center gap-0.5"
-                      >
-                        Aave Protocol
-                        <ExternalLink className="w-3 h-3 inline" />
-                      </a>{' '}
-                      integration in the background
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="glass-card border-[#DCC2FE]/30">
-                <CardContent className="p-3 sm:p-4 flex items-start gap-3 sm:gap-4">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#DCC2FE]/20 flex items-center justify-center flex-shrink-0">
-                    <Users className="w-4 h-4 sm:w-5 sm:h-5 text-[#DCC2FE]" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-[#F3F3F3] mb-1 text-sm sm:text-base">Community Driven</h4>
-                    <p className="text-xs sm:text-sm text-[#D9D9D9]">
-                      Join a vibrant community of creature collectors, trainers, and mini finance enthusiasts
-                    </p>
-                  </div>
+                <CardContent className="p-4 sm:p-6 space-y-3 sm:space-y-4 text-[#D9D9D9] text-xs sm:text-sm">
+                  <p>
+                    <strong className="text-[#DCC2FE]">MINIFI</strong> (Mini Finance) is a warm and low-risk  
+                    welcome to DeFi (decentralized Finance) in the format of a mobile mini app that combines 
+                    gamified cuteness with a piggybank mechanic under the hood.
+                  </p>
+                  <p>
+                    Start by getting your unique cosmic creature as an Unlock Protocol NFT, feed it with tokens 
+                    to help it grow, and watch your investments automatically generate yield through{' '}
+                    <a 
+                      href="https://aave.com/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-[#DCC2FE] hover:text-[#DCC2FE]/80 underline decoration-[#DCC2FE]/50 hover:decoration-[#DCC2FE] transition-colors"
+                    >
+                      Aave Protocol<ExternalLink className="w-3 h-3 inline ml-0.5 -mt-0.5" />
+                    </a>{' '}
+                    integration.
+                  </p>
+                  <p>
+                    While MINIFI is about building savings while having fun, you will also take part 
+                    in the wider lore of The ALANA Project.
+                  </p>
                 </CardContent>
               </Card>
             </div>
 
             {/* Creature Types */}
-            <Card className="glass-card border-[#DCC2FE]/30">
-              <CardHeader>
-                <CardTitle className="text-[#F3F3F3]">10 Unique Creature Types</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">🐉</span>
-                    <span className="text-[#D9D9D9]">Cosmic Dragon</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">🔥</span>
-                    <span className="text-[#D9D9D9]">Star Phoenix</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">🐺</span>
-                    <span className="text-[#D9D9D9]">Moon Wolf</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">🐱</span>
-                    <span className="text-[#D9D9D9]">Nebula Cat</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">🐍</span>
-                    <span className="text-[#D9D9D9]">Void Serpent</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">🐻</span>
-                    <span className="text-[#D9D9D9]">Galaxy Bear</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">🦊</span>
-                    <span className="text-[#D9D9D9]">Astral Fox</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">🦉</span>
-                    <span className="text-[#D9D9D9]">Comet Owl</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">🐰</span>
-                    <span className="text-[#D9D9D9]">Stardust Rabbit</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">🐢</span>
-                    <span className="text-[#D9D9D9]">Cosmic Turtle</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-
-
-            {/* Minting Options */}
-            <Card className="glass-card border-[#DCC2FE]/30">
-              <CardHeader>
-                <CardTitle className="text-[#F3F3F3] text-base sm:text-lg">Minting Options</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2 sm:space-y-3 text-[#D9D9D9]">
-                <p className="text-xs sm:text-sm">
-                  Choose how you want to mint your creature:
-                </p>
-                <ul className="text-xs sm:text-sm space-y-2">
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#DCC2FE] flex-shrink-0">•</span>
-                    <span><strong className="text-[#F3F3F3]">Random Mint:</strong> First mint is FREE, additional random mints cost 1 USDC each</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#DCC2FE] flex-shrink-0">•</span>
-                    <span><strong className="text-[#F3F3F3]">Dedicated Mint:</strong> Choose your specific creature for 3 USDC</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#DCC2FE] flex-shrink-0">•</span>
-                    <span>All creatures are minted as Unlock Protocol NFTs</span>
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            {/* How to Get Tokens */}
-            <Card className="glass-card border-[#DCC2FE]/30">
-              <CardHeader>
-                <CardTitle className="text-[#F3F3F3] text-base sm:text-lg">How to Get Tokens</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2 sm:space-y-3 text-[#D9D9D9]">
-                <p className="text-xs sm:text-sm">
-                  UP (Unlock Protocol) tokens are used to feed and nurture your creature. Here's how to get them:
-                </p>
-                <ul className="text-xs sm:text-sm space-y-2">
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#DCC2FE]">•</span>
-                    <span>Participate in community events</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#DCC2FE]">•</span>
-                    <span>Complete daily quests</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#DCC2FE]">•</span>
-                    <span>Trade with other players</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#DCC2FE]">•</span>
-                    <span>Purchase from the Unlock Protocol ecosystem</span>
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            {/* Links */}
-            <div className="px-6 mb-8">
-              <div className="space-y-3">
-                <Button 
-                  variant="outline" 
-                  className="w-full border-[#DCC2FE]/30 text-[#DCC2FE] hover:bg-[#DCC2FE]/10"
-                  asChild
-                >
-                  <a href="https://unlock-protocol.com" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-                    Learn About Unlock Protocol
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="w-full border-[#DCC2FE]/30 text-[#DCC2FE] hover:bg-[#DCC2FE]/10"
-                  asChild
-                >
-                  <a href="https://www.farcaster.xyz" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
-                    Learn About Farcaster
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
-                </Button>
+            <div className="mb-6">
+              <div className="mb-6">
+                <h2 className="text-lg sm:text-xl text-[#DCC2FE] font-medium tracking-wider mb-2 flex items-center gap-2">
+                  <Zap className="w-5 h-5" />
+                  10 Unique Creature Types
+                </h2>
+                <p className="text-sm text-[#D9D9D9]/80">Discover your Turritecco companion creature</p>
               </div>
+              
+              <Card className="glass-card border-[#DCC2FE]/30">
+                <CardContent className="p-4 sm:p-6">
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div className="flex items-center gap-2">
+                      <img src={sunnyoImage} alt="Sunnyo" className="w-8 h-8 rounded-full object-cover" />
+                      <span className="text-[#D9D9D9]">Sunnyo</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <img src={jellodrasImage} alt="Jellodras" className="w-8 h-8 rounded-full object-cover" />
+                      <span className="text-[#D9D9D9]">Jellodras</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <img src={lumibelImage} alt="Lumibel" className="w-8 h-8 rounded-full object-cover" />
+                      <span className="text-[#D9D9D9]">Lumibel</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <img src={snoodellaImage} alt="Snoodella" className="w-8 h-8 rounded-full object-cover" />
+                      <span className="text-[#D9D9D9]">Snoodella</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <img src={mellobaImage} alt="Melloba" className="w-8 h-8 rounded-full object-cover" />
+                      <span className="text-[#D9D9D9]">Melloba</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <img src={wistrowImage} alt="Wistrow" className="w-8 h-8 rounded-full object-cover" />
+                      <span className="text-[#D9D9D9]">Wistrow</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <img src={dozukiImage} alt="Dozuki" className="w-8 h-8 rounded-full object-cover" />
+                      <span className="text-[#D9D9D9]">Dozuki</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <img src={orbitronImage} alt="Orbitron" className="w-8 h-8 rounded-full object-cover" />
+                      <span className="text-[#D9D9D9]">Orbitron</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <img src={solaraImage} alt="Solara" className="w-8 h-8 rounded-full object-cover" />
+                      <span className="text-[#D9D9D9]">Solara</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <img src={bubbitImage} alt="Bubbit" className="w-8 h-8 rounded-full object-cover" />
+                      <span className="text-[#D9D9D9]">Bubbit</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
-            {/* Credits */}
-            <Card className="glass-card border-[#DCC2FE]/30">
-              <CardContent className="p-4 sm:p-6 text-center space-y-2">
-                <p className="text-sm text-[#D9D9D9]">
-                  Built by The ALANA Project
-                </p>
-                <p className="text-xs text-[#D9D9D9]/70">
-                  Powered by Unlock Protocol
-                </p>
-                <div className="pt-4">
-                  <p className="text-xs text-[#DCC2FE]">
-                    May the blockchain be with you ✨
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+            {/* Minting Options */}
+            <div className="mb-6">
+              <div className="mb-6">
+                <h2 className="text-lg sm:text-xl text-[#DCC2FE] font-medium tracking-wider mb-2 flex items-center gap-2">
+                  <Coins className="w-5 h-5" />
+                  Minting Options
+                </h2>
+                <p className="text-sm text-[#D9D9D9]/80">Choose how you want to mint your creature</p>
+              </div>
+              
+              <Card className="glass-card border-[#DCC2FE]/30">
+                <CardContent className="p-4 sm:p-6 text-[#D9D9D9]">
+                  <ul className="text-xs sm:text-sm space-y-2">
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#DCC2FE] flex-shrink-0">•</span>
+                      <span><strong className="text-[#F3F3F3]">Random Mint:</strong> First mint is FREE, additional random mints cost 1 USDC each</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#DCC2FE] flex-shrink-0">•</span>
+                      <span><strong className="text-[#F3F3F3]">Dedicated Mint:</strong> Choose your specific creature for 3 USDC</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#DCC2FE] flex-shrink-0">•</span>
+                      <span>All creatures are minted as{' '}
+                        <a 
+                          href="https://unlock-protocol.com/" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-[#DCC2FE] hover:text-[#DCC2FE]/80 underline decoration-[#DCC2FE]/50 hover:decoration-[#DCC2FE] transition-colors"
+                        >
+                          Unlock Protocol<ExternalLink className="w-3 h-3 inline ml-0.5 -mt-0.5" />
+                        </a>{' '}
+                        NFTs</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* How to Get Tokens */}
+            <div className="mb-6">
+              <div className="mb-6">
+                <h2 className="text-lg sm:text-xl text-[#DCC2FE] font-medium tracking-wider mb-2 flex items-center gap-2">
+                  <Wallet className="w-5 h-5" />
+                  How to Get Tokens on Base
+                </h2>
+                <p className="text-sm text-[#D9D9D9]/80">$UP tokens and any other tokens on Base feed and nurture your Turritecco creature</p>
+              </div>
+              
+              <Card className="glass-card border-[#DCC2FE]/30">
+                <CardContent className="p-4 sm:p-6 text-[#D9D9D9]">
+                  <ul className="text-xs sm:text-sm space-y-2">
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#DCC2FE]">•</span>
+                      <span>Participate in Unlock DAO and receive tokens for your contributions</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#DCC2FE]">•</span>
+                      <span>Get some $UP tokens on the open market <a href="https://www.coingecko.com/en/coins/unlockprotocoltoken" target="_blank" rel="noopener noreferrer" className="text-[#DCC2FE] hover:underline">here</a></span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
         </div>
       </div>
     </div>
