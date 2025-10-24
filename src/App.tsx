@@ -41,14 +41,8 @@ export default function App() {
   const [mintedCreature, setMintedCreature] = useState<string | null>(null);
   const [mintedCreatures, setMintedCreatures] = useState<string[]>([]);
 
-  // Check if user has seen intro before
+  // Check wallet connection on load (intro always plays)
   useEffect(() => {
-    const seenIntro = localStorage.getItem('minifi-seen-intro');
-    if (seenIntro === 'true') {
-      setShowIntro(false);
-      setHasSeenIntro(true);
-    }
-
     // Check wallet connection first
     const savedWallet = localStorage.getItem('minifi-wallet');
     if (savedWallet) {
@@ -109,14 +103,12 @@ export default function App() {
     setShowIntro(false);
     setHasSeenIntro(true);
     setCurrentPage('mint');
-    localStorage.setItem('minifi-seen-intro', 'true');
   };
 
   const handleIntroSkip = () => {
     setShowIntro(false);
     setHasSeenIntro(true);
     setCurrentPage('mint');
-    localStorage.setItem('minifi-seen-intro', 'true');
   };
 
   const handlePageChange = (page: MobilePageType) => {

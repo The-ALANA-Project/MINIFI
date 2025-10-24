@@ -60,7 +60,7 @@ export function InfoPage() {
                 <CardContent className="p-4 sm:p-6 space-y-3 sm:space-y-4 text-[#D9D9D9] text-xs sm:text-sm">
                   <p>
                     <strong className="text-[#DCC2FE]">MINIFI</strong> (Mini Finance) is a warm and low-risk  
-                    welcome to DeFi (decentralized Finance) in the format of a mobile mini app that combines 
+                    welcome to DeFi (decentralized finance) in the format of a mobile mini app that combines 
                     gamified cuteness with a piggybank mechanic under the hood.
                   </p>
                   <p>
@@ -74,7 +74,17 @@ export function InfoPage() {
                     >
                       Aave Protocol<ExternalLink className="w-3 h-3 inline ml-0.5 -mt-0.5" />
                     </a>{' '}
-                    integration.
+                    integration. A sustainable{' '}
+                    <span className="text-[#DCC2FE]">10% of generated yield supports the app and educational resources</span>
+                    {' '}from{' '}
+                    <a 
+                      href="https://paragraph.com/@the-alana-project" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-[#DCC2FE] hover:text-[#DCC2FE]/80 underline decoration-[#DCC2FE]/50 hover:decoration-[#DCC2FE] transition-colors"
+                    >
+                      The ALANA Project<ExternalLink className="w-3 h-3 inline ml-0.5 -mt-0.5" />
+                    </a>.
                   </p>
                   <p>
                     While MINIFI is about building savings while having fun, you will also take part 
@@ -177,6 +187,28 @@ export function InfoPage() {
                         NFTs</span>
                     </li>
                   </ul>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Sustainability & Support */}
+            <div className="mb-6">
+              <div className="mb-6">
+                <h2 className="text-lg sm:text-xl text-[#DCC2FE] font-medium tracking-wider mb-2 flex items-center gap-2">
+                  <Heart className="w-5 h-5" />
+                  Sustainability & Support
+                </h2>
+                <p className="text-sm text-[#D9D9D9]/80">Building for the long term</p>
+              </div>
+              
+              <Card className="glass-card border-[#DCC2FE]/30">
+                <CardContent className="p-4 sm:p-6 text-[#D9D9D9]">
+                  <p className="text-xs sm:text-sm mb-3">
+                    <strong className="text-[#DCC2FE]">10% of all yield generated</strong> through MINIFI stays with the platform to ensure long-term sustainability and support The ALANA Project's mission.
+                  </p>
+                  <p className="text-xs sm:text-sm">
+                    This sustainable model allows us to continue building educational resources and maintaining free access to Web3 learning tools for creators and builders worldwide. Your Turriteccos help create a positive impact while you save!
+                  </p>
                 </CardContent>
               </Card>
             </div>

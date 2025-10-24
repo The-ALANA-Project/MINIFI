@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogPortal, DialogOverlay } from '../ui/dialog';
 import { toast } from 'sonner@2.0.3';
+import { CreatureCarousel } from '../CreatureCarousel';
 import minifiTitle from 'figma:asset/43ed93ec12b7cd4f7b5812ed68ed562405f82239.png';
 import sunnyoImage from 'figma:asset/dd2bf1c1f6de584004aa489ac7fce117393c0239.png';
 import jellodrasImage from 'figma:asset/7faac7b58396842abb9e0e75ccdcb2d00d14adcd.png';
@@ -34,8 +35,8 @@ const CREATURES = [
   { id: 6, name: 'Wistrow', description: 'Your loyal butler at your service', color: '#B99EF5', image: wistrowImage },
   { id: 7, name: 'Dozuki', description: 'Slow and steady savings guide', color: '#A08AE5', image: dozukiImage },
   { id: 8, name: 'Orbitron', description: 'Watchful observer of your progress', color: '#C9B3F9', image: orbitronImage },
-  { id: 9, name: 'Solara', description: 'Shines brightest with your progress', color: '#B99EF5', image: solaraImage },
-  { id: 10, name: 'Bubbit', description: 'Excited explorer of possibilities', color: '#8B6FD8', image: bubbitImage },
+  { id: 9, name: 'Solara', description: 'Shines brightest with your progress', color: '#B99EF5', image: bubbitImage },
+  { id: 10, name: 'Bubbit', description: 'Excited explorer of possibilities', color: '#8B6FD8', image: solaraImage },
 ];
 
 export function MintingPage({ onMintComplete, isWalletConnected, onWalletConnect, walletAddress }: MintingPageProps) {
@@ -153,6 +154,10 @@ export function MintingPage({ onMintComplete, isWalletConnected, onWalletConnect
                 Feed. Grow. Save.
               </p>
             </div>
+
+            {/* Creature Carousel */}
+            <CreatureCarousel creatures={CREATURES} />
+
             <p className="text-sm sm:text-base text-[#D9D9D9]/90 leading-relaxed">
               Mint your cosmic creature, feed it to grow stronger, and watch your savings generate yield through <a 
                 href="https://aave.com/" 
