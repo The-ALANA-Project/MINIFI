@@ -1,4 +1,4 @@
-### MINIFI Smart Contracts
+## `MINIFI Smart Contracts`
 
 MINIFI is a playful DeFi onboarding platform where users can mint unique Turritecco NFTs, feed them with UP tokens, and level them up. Feeding also represents a micro-investment, with all tokens sent to the project wallet (future versions could integrate yield generation like Aave).
 
